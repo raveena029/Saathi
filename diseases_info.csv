@@ -1,0 +1,33 @@
+disease,medication,doctor,risk_level
+Varicose Veins,"Compression stockings, sclerotherapy. Surgery (laser treatment) if severe.",Vascular Surgeon,Moderate
+Typhoid,"Antibiotics (Ciprofloxacin, Azithromycin). Bed rest essential.",Infectious Disease Specialist,High
+Chicken Pox,"Antiviral (Acyclovir), pain relief. Bed rest until symptoms subside.","Pediatrician, Dermatologist",Low to Moderate
+Impetigo,"Antibiotics (Topical Mupirocin). No surgery, rest recommended if extensive.",Dermatologist,Low
+Dengue,"Supportive care, fluids, Paracetamol. Bed rest, hospitalization if severe.",Infectious Disease Specialist,High
+Fungal Infection,"Antifungal (Clotrimazole, Fluconazole). No surgery, rest for severe cases.",Dermatologist,Low to Moderate
+Common Cold,"Decongestants, antihistamines. Bed rest helpful.",General Practitioner,Low
+Pneumonia,"Antibiotics (Azithromycin, Amoxicillin). Hospitalization, bed rest if severe.",Pulmonologist,High
+Dimorphic Hemorrhoids,"Laxatives, topical creams (Hydrocortisone). Surgery (Hemorrhoidectomy) if severe.","Proctologist, Gastroenterologist",Low to Moderate
+Arthritis,"NSAIDs, DMARDs (Methotrexate). Physical therapy, joint surgery if needed.",Rheumatologist,Moderate to High
+Acne,"Topical retinoids, antibiotics. No surgery, laser therapy if severe.",Dermatologist,Low
+Bronchial Asthma,"Inhalers (Salbutamol), corticosteroids. Bed rest during severe attacks.",Pulmonologist,Moderate to High
+Hypertension,"ACE inhibitors, beta-blockers. Lifestyle changes, no surgery.",Cardiologist,High
+Migraine,"Triptans, NSAIDs. Bed rest during attacks.",Neurologist,Moderate
+Cervical Spondylosis,"Pain relief (NSAIDs), physical therapy. Surgery for severe cases, bed rest recommended.","Orthopedist, Neurologist",Moderate
+Jaundice,"Treatment based on cause (antivirals, hydration). Bed rest essential.","Hepatologist, Gastroenterologist",Moderate to High
+Malaria,"Antimalarial (Chloroquine, Artemether). Bed rest essential, hospitalization if severe.",Infectious Disease Specialist,High
+Urinary Tract Infection,"Antibiotics (Nitrofurantoin, Ciprofloxacin). Bed rest if severe symptoms.",Urologist,Low to Moderate
+Allergy,"Antihistamines (Cetirizine), corticosteroids. Bed rest for severe reactions.","Allergist, Immunologist",Low to Moderate
+GERD (Reflux Disease),"Proton pump inhibitors (Omeprazole). Lifestyle changes, surgery (Nissen fundoplication) if severe.",Gastroenterologist,Moderate
+Drug Reaction,"Antihistamines, corticosteroids. Bed rest, hospitalization if severe.","Dermatologist, Allergist",High
+Peptic Ulcer Disease,"Proton pump inhibitors (Pantoprazole), antibiotics. Surgery if perforation occurs.",Gastroenterologist,Moderate to High
+Diabetes,"Insulin, Metformin. No surgery unless complications arise.",Endocrinologist,High
+PCOS,"Birth control pills, Metformin. Surgery (Laparoscopic ovarian drilling) if needed.","Gynecologist, Endocrinologist",Moderate
+Endometriosis,"Pain relief, hormonal therapy. Surgery (Laparoscopy) often recommended.",Gynecologist,Moderate
+Menopause,Hormone Replacement Therapy (HRT). No surgery.,"Gynecologist, Endocrinologist",Low to Moderate
+Cervical Cancer,"Chemotherapy, radiation, surgery. Surgery (Hysterectomy), radiation therapy.","Oncologist, Gynecologist",High
+Ovarian Cancer,"Surgery, chemotherapy. Surgery (Oophorectomy), chemotherapy.","Oncologist, Gynecologist",High
+Fibroids,"Hormonal therapy, surgery (Myomectomy). Surgery for large or symptomatic fibroids.",Gynecologist,Low to Moderate
+Breast Cancer,"Chemotherapy, radiation, surgery. Surgery (Lumpectomy/Mastectomy), radiation therapy.",Oncologist,High
+Pregnancy Complications,"Depends on condition (e.g., preeclampsia, gestational diabetes). Bed rest, surgery (C-section) if needed.",Obstetrician,High
+Psoriasis,"Topical treatments, phototherapy, systemic medications, biologics",Dermatologist,Moderate
