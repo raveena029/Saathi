@@ -2,9 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
-from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import seaborn as sns
 from medical_extraction import initialize_processor, analyze_medical_symptoms
@@ -84,12 +82,12 @@ def main():
     
     st.sidebar.title("Analysis Options")
     analysis_type = st.sidebar.radio("Select Analysis Type", ["Women Crime Report", "Medical Disorder Extraction"])
-
+    
     if analysis_type == "Women Crime Report":
         st.title("Women Crime Analysis Dashboard")
-    
+        
         try:
-            crime_analysis = CrimeAnalysis('CrimesOnWomenData.csv')
+            crime_analysis = CrimeAnalysis('Saathi\\CrimesOnWomenData.csv')
             crime_analysis.kmeans_clustering()
             
             # Visualization Section
@@ -99,42 +97,37 @@ def main():
             
             # Query Section
             st.subheader("Crime Data Query")
-
-            # Text input for the query
-            query = st.text_input("Enter your query")
-
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                crime_type = st.selectbox(
+                    "Select Crime Type",
+                    options=[col for col in crime_analysis.df.columns if col not in ['State', 'Year', 'Cluster']]
+                )
+            
+            with col2:
+                year = st.selectbox(
+                    "Select Year",
+                    options=sorted(crime_analysis.df['Year'].unique()) if 'Year' in crime_analysis.df.columns else []
+                )
+            
             if st.button("Query Data"):
-                try:
-                    # Preprocess the query
-                    vectorizer = TfidfVectorizer(stop_words='english')
-                    query_vector = vectorizer.fit_transform([query])
+                results = crime_analysis.query_crime_data(crime_type, year)
+                if not results.empty:
+                    st.write(f"Top 5 states with highest {crime_type} cases in {year}:")
+                    st.dataframe(results)
                     
-                    # Preprocess the data
-                    data_vectors = vectorizer.transform(crime_analysis.df['Crime Description'])  # Assuming 'Crime Description' column exists
+                    # Visualization of query results
+                    fig, ax = plt.subplots(figsize=(10, 6))
+                    sns.barplot(data=results, x='State', y=crime_type)
+                    plt.xticks(rotation=45)
+                    plt.title(f"{crime_type} Cases by State ({year})")
+                    st.pyplot(fig)
+                else:
+                    st.warning("No data found for the selected criteria")
                     
-                    # Calculate similarity
-                    similarities = cosine_similarity(query_vector, data_vectors).flatten()
-                    
-                    # Get top 5 relevant results
-                    top_indices = similarities.argsort()[-5:][::-1]
-                    results = crime_analysis.df.iloc[top_indices]
-                    
-                    if not results.empty:
-                        st.write("Top 5 relevant results:")
-                        st.dataframe(results)
-                        
-                        # Visualization of query results
-                        fig, ax = plt.subplots(figsize=(10, 6))
-                        sns.barplot(data=results, x='State', y='Crime Count')  # Assuming 'Crime Count' column exists
-                        plt.xticks(rotation=45)
-                        plt.title("Relevant Crime Data")
-                        st.pyplot(fig)
-                    else:
-                        st.warning("No data found for the entered query")
-                except Exception as e:
-                    st.error(f"Error in crime analysis: {e}")
         except Exception as e:
-            st.error(f"Error loading crime analysis data: {e}")
+            st.error(f"Error in crime analysis: {e}")
             
     else:  # Medical Disorder Extraction
         st.title("Medical Symptom Analysis System")

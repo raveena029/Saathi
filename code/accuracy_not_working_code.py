@@ -404,8 +404,8 @@ def main():
     
     try:
         # Load datasets
-        symptoms_df = pd.read_csv("C:\\Users\\ravee\\Downloads\\Updated_Symptom2Disease.csv")
-        diseases_info_df = pd.read_csv("C:\\Users\\ravee\\Downloads\\diseases_info.csv")
+        symptoms_df = pd.read_csv("Updated_Symptom2Disease.csv")
+        diseases_info_df = pd.read_csv("diseases_info.csv")
         
         # Verify column names
         required_symptom_cols = ['disease', 'symptoms']
