@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -365,11 +365,21 @@ def main():
 
                 # Model Evaluation
                 y_pred_test = knn.predict(X_test)
+
+# Calculate metrics
                 accuracy = accuracy_score(y_test, y_pred_test)
+                precision = precision_score(y_test, y_pred_test, average='weighted')
+                recall = recall_score(y_test, y_pred_test, average='weighted')
                 f1 = f1_score(y_test, y_pred_test, average='weighted')
 
-                st.write(f"**Model Accuracy**: {accuracy:.2f}")
-                st.write(f"**Model F1 Score**: {f1:.2f}")
+                # Print detailed classification report
+                print("Classification Report:")
+                #print(classification_report(y_test, y_pred_test, target_names=le.classes_))
+
+                st.write(f"Accuracy: {accuracy:.4f}")
+                st.write(f"Precision: {precision:.4f}")
+                st.write(f"Recall: {recall:.4f}")
+                st.write(f"F1 Score: {f1:.4f}")
             else:
                 st.warning("Please enter symptoms.")
 
