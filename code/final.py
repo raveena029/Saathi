@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -68,9 +68,19 @@ class CrimeAnalysis:
         if selected_year:
             filtered_df = filtered_df[filtered_df['Year'] == selected_year]
         
+        # Assuming the crime type columns are all columns except 'State' and 'Year'
+        crime_columns = [col for col in filtered_df.columns if col not in ['State', 'Year']]
+        
         if selected_crime:
-            full_crime_name = self.crime_mapping.get(selected_crime, selected_crime)
-            filtered_df = filtered_df[filtered_df['Crime Type'] == full_crime_name]
+            if selected_crime in crime_columns:
+                # Filter by the selected crime type
+                filtered_df = filtered_df[['State', selected_crime]]
+                filtered_df = filtered_df.rename(columns={selected_crime: 'Crime Count'})
+            else:
+                raise ValueError(f"Crime type '{selected_crime}' not found in the dataset.")
+        else:
+            # Calculate total crime count by summing up individual crime type columns
+            filtered_df['Crime Count'] = filtered_df[crime_columns].sum(axis=1)
         
         # Group by state and calculate total crime count
         state_crime_ranking = filtered_df.groupby('State')['Crime Count'].sum().sort_values(ascending=False)
@@ -81,24 +91,42 @@ class CrimeAnalysis:
         """Compute accuracy, precision, recall, and F1 score"""
         from sklearn.preprocessing import LabelEncoder
         
+        filtered_df = self.df.copy()
+        crime_columns = [col for col in filtered_df.columns if col not in ['State', 'Year']]
+        
+        filtered_df['Crime Count'] = filtered_df[crime_columns].sum(axis=1)
+        
+        
+        # Ensure the DataFrame has a 'Crime Count' column
+        if 'Crime Count' not in filtered_df.columns:
+            raise ValueError("DataFrame must contain a 'Crime Count' column.")
+        
         # Prepare data for classification
         le = LabelEncoder()
-        X = df[['Year', 'Crime Count']]
-        y = le.fit_transform(df['State'])
+        X = filtered_df[['Year', 'Crime Count']]
+        y = le.fit_transform(filtered_df['State'])
         
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         
-        # Use KNN for classification
-        knn = KNeighborsClassifier(n_neighbors=3)
-        knn.fit(X_train, y_train)
-        y_pred = knn.predict(X_test)
+        # Train a simple classifier (e.g., Logistic Regression)
+        from sklearn.linear_model import LogisticRegression
+        model = LogisticRegression()
+        model.fit(X_train, y_train)
+        
+        # Make predictions
+        y_pred = model.predict(X_test)
         
         # Compute metrics
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, average='weighted')
+        recall = recall_score(y_test, y_pred, average='weighted')
+        f1 = f1_score(y_test, y_pred, average='weighted')
+        
         metrics = {
-            'Accuracy': accuracy_score(y_test, y_pred),
-            'Precision': precision_score(y_test, y_pred, average='weighted'),
-            'Recall': recall_score(y_test, y_pred, average='weighted'),
-            'F1 Score': f1_score(y_test, y_pred, average='weighted')
+            'accuracy': accuracy,
+            'precision': precision,
+            'recall': recall,
+            'f1_score': f1
         }
         
         return metrics
@@ -214,7 +242,7 @@ def main():
         st.title("Women Crime Analysis Dashboard")
     
         try:
-            crime_analysis = CrimeAnalysis(r"C:\Users\ravee\Downloads\CrimesOnWomenData.csv")
+            crime_analysis = CrimeAnalysis(r"CrimesOnWomenData.csv")
             crime_analysis.kmeans_clustering()
             
             # Visualization Section
@@ -249,7 +277,7 @@ def main():
             
             try:
                 # Initialize crime analysis
-                crime_analysis = CrimeAnalysis(r"C:\Users\ravee\Downloads\CrimesOnWomenData.csv")
+                crime_analysis = CrimeAnalysis(r"CrimesOnWomenData.csv")
                 
                 # Create dropdowns
                 col1, col2, col3 = st.columns(3)
@@ -300,7 +328,7 @@ def main():
     # Disease Classification Section
     else:  # Disease Classification
         st.title("Disease Classification Based on Symptoms")
-        dataset_path = r"C:\Users\ravee\Downloads\dataset.csv"
+        dataset_path = r"dataset\dataset.csv"
         st.write("Loading the dataset...")
         df = pd.read_csv(dataset_path)
         
@@ -365,7 +393,6 @@ def main():
 
                 # Model Evaluation
                 y_pred_test = knn.predict(X_test)
-
                 # Calculate metrics
                 accuracy = accuracy_score(y_test, y_pred_test)
                 precision = precision_score(y_test, y_pred_test, average='weighted')
