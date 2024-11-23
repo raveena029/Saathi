@@ -30,6 +30,9 @@ class CrimeAnalysis:
         # Convert Year column to numeric if it's not already
         self.df['Year'] = pd.to_numeric(self.df['Year'], errors='coerce')
         
+        # Convert State column to lowercase and remove special symbols
+        self.df['State'] = self.df['State'].str.lower().str.replace('[^a-z\s]', '', regex=True)
+        
         # Define crime types mapping
         self.crime_mapping = {
             'K&A': 'Kidnapping and Abduction',
@@ -56,8 +59,10 @@ class CrimeAnalysis:
             filtered_df = filtered_df[filtered_df['State'] == selected_state]
         
         if selected_crime:
-            full_crime_name = self.crime_mapping.get(selected_crime, selected_crime)
-            filtered_df = filtered_df[filtered_df['Crime Type'] == full_crime_name]
+            if selected_crime in filtered_df.columns:
+                filtered_df = filtered_df[['State', 'Year', selected_crime]]
+            else:
+                raise ValueError(f"Crime type '{selected_crime}' not found in the dataset.")
         
         return filtered_df
     
