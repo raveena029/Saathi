@@ -269,7 +269,7 @@ def main():
                 'D & N HAVELI', 'DAMAN & DIU', 'LAKSHADWEEP', 'PUDUCHERRY'
             ]
             
-            YEARS = list(range(2001, 2012))
+            YEARS = list(range(2001, 2022))
             
             CRIME_TYPES = {
                 'K&A': 'Kidnapping and Abduction',
