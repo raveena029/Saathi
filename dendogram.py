@@ -20,7 +20,7 @@ def preprocess_text(text):
     return text
 
 # Load dataset
-df = pd.read_csv(r"C:\Users\ravee\Downloads\dataset.csv")
+df = pd.read_csv(r"dataset\dataset.csv")
 
 # Preprocess symptoms
 df['processed_symptoms'] = df['symptoms'].apply(preprocess_text)

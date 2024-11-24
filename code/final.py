@@ -136,7 +136,7 @@ class CrimeAnalysis:
         
         return metrics
         
-    def kmeans_clustering(self, num_clusters=4, max_iters=100, tolerance=1e-4):
+    def kmeans_clustering(self, num_clusters=2, max_iters=100, tolerance=1e-4):
         np.random.seed(42)
         initial_indices = np.random.choice(len(self.crime_matrix_scaled), num_clusters, replace=False)
         centroids = self.crime_matrix_scaled[initial_indices]
